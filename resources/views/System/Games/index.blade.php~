@@ -1,0 +1,54 @@
+<div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+    <div style="padding-bottom: 2rem;">
+        <h1 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">Agenda de Jogos</h1>
+
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; background-color: white; border-radius: 0.75rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-collapse: collapse;">
+                <thead style="background-color: #f3f4f6; color: #4b5563; font-size: 0.875rem; text-transform: uppercase; text-align: center;">
+                <tr>
+                    <th style="padding: 0.75rem;">Data</th>
+                    <th style="padding: 0.75rem;">Adversário</th>
+                    <th style="padding: 0.75rem;">Local</th>
+                    <th style="padding: 0.75rem;">Resultado</th>
+                    <th style="padding: 0.75rem;">Status</th>
+                    <th style="padding: 0.75rem;">Observações</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($games as $game)
+                    <tr style="text-align: center; border-bottom: 1px solid #e5e7eb;">
+                        <td style="padding: 1rem;">{{ $game->scheduled_at->format('d/m/y H:i') }}</td>
+                        <td style="padding: 1rem; font-weight: 600;">{{ $game->opponent }}</td>
+                        <td style="padding: 1rem;">
+                            @if($game->location === 'home')
+                                🏠 Casa
+                            @else
+                                🚌 Fora
+                            @endif
+                        </td>
+                        <td style="padding: 1rem;">
+                            @if($game->result)
+                                {{ $game->result }}
+                            @else
+                                —
+                            @endif
+                        </td>
+                        <td style="padding: 1rem;">
+                            @if($game->scheduled_at > now())
+                                <span style="color: #2563eb; font-weight: 500;">Agendado</span>
+                            @elseif($game->result)
+                                <span style="color: #16a34a; font-weight: 500;">Finalizado</span>
+                            @else
+                                <span style="color: #ca8a04; font-weight: 500;">Pendente</span>
+                            @endif
+                        </td>
+                        <td style="padding: 1rem; font-size: 0.875rem; color: #6b7280;">
+                            {{ $game->notes ?? '—' }}
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
