@@ -7,3 +7,4 @@ Route::get('/', function () {
 });
 
 Route::get('/games', 'App\Http\Controllers\GameController@index')->name('games.index');
+Route::get('/players', 'App\Http\Controllers\PlayerController@index')->name('players.index');

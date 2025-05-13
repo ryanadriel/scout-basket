@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\GameResource\Pages;
-use App\Filament\Resources\GameResource\RelationManagers;
-use App\Models\Game;
+use App\Filament\Resources\PlayerResource\Pages;
+use App\Filament\Resources\PlayerResource\RelationManagers;
+use App\Models\Player;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,31 +13,32 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class GameResource extends Resource
+class PlayerResource extends Resource
 {
-    protected static ?string $model = Game::class;
+    protected static ?string $model = Player::class;
 
-    protected static ?string $navigationGroup = 'Jogos';
-
+    protected static ?string $navigationGroup = 'Jogadores';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('opponent')
+                Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('scheduled_at')
-                    ->required(),
-                Forms\Components\TextInput::make('location')
-                    ->required(),
-                Forms\Components\TextInput::make('venue')
+                Forms\Components\TextInput::make('position')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('result')
+                Forms\Components\TextInput::make('number')
                     ->maxLength(255),
-                Forms\Components\Toggle::make('is_finished')
-                    ->required(),
+                Forms\Components\TextInput::make('height')
+                    ->numeric(),
+                Forms\Components\TextInput::make('weight')
+                    ->numeric(),
+                Forms\Components\TextInput::make('age')
+                    ->numeric(),
+                Forms\Components\TextInput::make('points')
+                    ->numeric(),
             ]);
     }
 
@@ -45,18 +46,24 @@ class GameResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('opponent')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('scheduled_at')
-                    ->dateTime()
+                Tables\Columns\TextColumn::make('position')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('number')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('height')
+                    ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('location'),
-                Tables\Columns\TextColumn::make('venue')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('result')
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('is_finished')
-                    ->boolean(),
+                Tables\Columns\TextColumn::make('weight')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('age')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('points')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -93,9 +100,9 @@ class GameResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListGames::route('/'),
-            'create' => Pages\CreateGame::route('/create'),
-            'edit' => Pages\EditGame::route('/{record}/edit'),
+            'index' => Pages\ListPlayers::route('/'),
+            'create' => Pages\CreatePlayer::route('/create'),
+            'edit' => Pages\EditPlayer::route('/{record}/edit'),
         ];
     }
 }
